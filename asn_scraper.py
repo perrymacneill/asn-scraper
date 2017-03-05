@@ -64,15 +64,16 @@ def create_json(mapping):
         #write the dicitonary to file as valid aJSON
         json.dump(mapping, out_file)
 
-#main program
-#get the main page
-main_page = url_to_soup(SITE + '/report/world')
+def main():
+    main_page = url_to_soup(SITE + '/report/world')
+    
+    #get the links to the country pages
+    country_links = find_subpages(main_page)
+    
+    #scrape each country page in the list for ASN info
+    asn_mappings = scrape_pages(country_links)
+    
+    #write the mappings of ASN info to a JSON file
+    create_json(asn_mappings)
 
-#get the links to the country pages
-country_links = find_subpages(main_page)
-
-#scrape each country page in the list for ASN info
-asn_mappings = scrape_pages(country_links)
-
-#write the mappings of ASN info to a JSON file
-create_json(asn_mappings)
+main()
